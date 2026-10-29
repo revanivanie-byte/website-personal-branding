@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="AI Personal Branding Builder: bangun bio, konten, dan latihan wawancara untuk citra profesional Anda.">
+  <title>AI Personal Branding Builder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+/* ===== Variabel warna ===== */
+:root{
+  --navy:#0b1f4d; --navy-2:#16347a; --blue:#2563eb; --teal:#0d9488; --orange:#f97316; --purple:#7c3aed; --pink:#ec4899;
+  --bg:#f1f5fb; --card:#fff; --text:#1e293b; --muted:#64748b; --line:#e2e8f0; --danger:#dc2626; --ok:#16a34a;
+  --accent:var(--blue); --radius:16px; --shadow:0 10px 30px rgba(15,35,90,.10);
+  font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(180deg,#e8efff 0,var(--bg) 320px);color:var(--text);line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+main{flex:1;padding-block:28px 56px}
+.container{width:min(1120px,100% - 32px);margin-inline:auto}
+.skip-link{position:absolute;left:-999px;top:8px;background:#fff;padding:8px 14px;border-radius:8px;z-index:100}
+.skip-link:focus{left:8px}
+:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
+
+/* ===== Header ===== */
+.site-header{background:linear-gradient(120deg,var(--navy),var(--navy-2));position:sticky;top:0;z-index:50;box-shadow:0 4px 18px rgba(11,31,77,.3)}
+.header-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding-block:12px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800}
+.brand-mark{display:grid;place-items:center;width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,var(--orange),var(--pink));font-size:.9rem}
+.brand-name{font-size:1.05rem}
+.tabs{display:flex;gap:6px;overflow-x:auto;max-width:100%;padding-bottom:2px}
+.tab{border:0;background:rgba(255,255,255,.1);color:#dbe6ff;padding:9px 16px;border-radius:999px;font:600 .92rem inherit;font-family:inherit;cursor:pointer;white-space:nowrap;transition:.2s}
+.tab:hover{background:rgba(255,255,255,.2);color:#fff}
+.tab.is-active{background:#fff;color:var(--navy);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+
+/* ===== Panel & banner ===== */
+.panel[hidden]{display:none}
+#panel-dashboard{--accent:var(--blue);--grad:linear-gradient(120deg,#2563eb,#7c3aed)}
+#panel-content{--accent:var(--teal);--grad:linear-gradient(120deg,#0d9488,#2563eb)}
+#panel-interview{--accent:var(--orange);--grad:linear-gradient(120deg,#f97316,#ec4899)}
+#panel-evaluation{--accent:var(--purple);--grad:linear-gradient(120deg,#7c3aed,#ec4899)}
+.panel-intro{background:var(--grad);color:#fff;border-radius:22px;padding:30px 28px;margin-bottom:24px;box-shadow:var(--shadow)}
+.panel-intro h1{font-size:clamp(1.5rem,4vw,2.1rem);line-height:1.2;margin-bottom:6px}
+.panel-intro p{opacity:.92;max-width:60ch}
+.grid-2{display:grid;gap:22px;grid-template-columns:1fr}
+@media(min-width:880px){.grid-2{grid-template-columns:1fr 1fr}}
+
+/* ===== Kartu ===== */
+.card{background:var(--card);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border-top:5px solid var(--accent)}
+.card h2{font-size:1.2rem;margin-bottom:16px;color:var(--navy)}
+.card h3{font-size:1rem;margin:22px 0 10px;color:var(--navy)}
+
+/* ===== Form ===== */
+.field{margin-bottom:16px}
+label{display:block;font-weight:600;font-size:.9rem;margin-bottom:6px}
+input,select,textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:#f8fafc;color:var(--text);transition:.2s}
+input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent);background:#fff;box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 18%,transparent)}
+textarea{resize:vertical}
+.hint{color:var(--muted);font-size:.82rem;margin-top:5px}
+.form-error{background:#fee2e2;color:var(--danger);padding:10px 14px;border-radius:10px;font-size:.9rem;margin-bottom:14px}
+.form-error[hidden]{display:none}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+
+/* ===== Tombol ===== */
+.btn{border:0;border-radius:12px;padding:12px 20px;font:700 .95rem inherit;font-family:inherit;cursor:pointer;transition:.2s}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--grad);color:#fff;box-shadow:0 6px 16px color-mix(in srgb,var(--accent) 35%,transparent)}
+.btn-primary:hover:not(:disabled){transform:translateY(-2px);filter:brightness(1.07)}
+.btn-ghost{background:#eef2ff;color:var(--navy)}
+.btn-ghost:hover:not(:disabled){background:#dfe7ff}
+.btn-small{padding:7px 14px;font-size:.82rem}
+.btn-record{background:linear-gradient(120deg,#ef4444,#f97316);color:#fff}
+.btn-record[aria-pressed="true"]{animation:pulse 1.2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(239,68,68,.18)}}
+
+/* ===== Hasil ===== */
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.result-head h2,.result-head h3{margin:0}
+.history-head{margin-top:26px}
+.output{background:#f8fafc;border:1.5px dashed var(--line);border-radius:12px;padding:18px;white-space:pre-wrap;min-height:130px}
+.output.empty,.empty{color:var(--muted);font-style:italic}
+.output:not(.empty){background:color-mix(in srgb,var(--accent) 7%,#fff);border:1.5px solid color-mix(in srgb,var(--accent) 30%,#fff);font-style:normal;color:var(--text)}
+.loader{display:flex;align-items:center;gap:6px;color:var(--accent);font-weight:600;padding:10px 0}
+.loader[hidden]{display:none}
+.loader-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);animation:bounce 1s infinite}
+.loader-dot:nth-child(2){animation-delay:.15s}.loader-dot:nth-child(3){animation-delay:.3s}
+.loader-text{margin-left:6px}
+@keyframes bounce{50%{transform:translateY(-7px);opacity:.5}}
+.history,.breakdown,.recommendations{list-style:none}
+.history li{background:#f8fafc;border-left:4px solid var(--accent);padding:10px 14px;border-radius:10px;margin-bottom:8px;font-size:.9rem}
+.history li.empty{border-left-color:var(--line)}
+.history small{display:block;color:var(--muted)}
+
+/* ===== Wawancara ===== */
+.notice{background:#fff7ed;border:1px solid #fdba74;color:#9a3412;padding:12px 16px;border-radius:12px;margin-bottom:18px}
+.notice[hidden]{display:none}
+.question{font-size:1.2rem;font-weight:700;color:var(--navy);background:#fff7ed;border-radius:12px;padding:18px;margin-bottom:8px}
+.speech-status{color:var(--muted);font-size:.88rem;margin:8px 0 12px}
+
+/* ===== Evaluasi ===== */
+.score-card{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.score-ring{--score:0;width:210px;height:210px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--accent) calc(var(--score)*1%),#e5e9f2 0);transition:.6s}
+.score-inner{width:164px;height:164px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.score-value{font-size:3.2rem;font-weight:800;color:var(--navy);line-height:1}
+.score-max{color:var(--muted);font-size:.85rem}
+.score-label{font-weight:700;font-size:1.1rem;color:var(--accent)}
+.breakdown li{margin-bottom:14px;font-size:.92rem}
+.bd-row{display:flex;justify-content:space-between;font-weight:600;margin-bottom:5px}
+.bar{height:10px;background:#e5e9f2;border-radius:99px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--grad);border-radius:99px;transition:width .6s}
+.recommendations li{background:#faf5ff;border-left:4px solid var(--purple);padding:11px 14px;border-radius:10px;margin-bottom:9px;font-size:.92rem}
+.recommendations li.empty{border-left-color:var(--line);background:#f8fafc}
+
+/* ===== Footer & toast ===== */
+.site-footer{background:var(--navy);color:#c7d6ff;padding:22px 0;font-size:.88rem}
+.site-footer .container{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 22px;border-radius:999px;box-shadow:var(--shadow);z-index:99;font-weight:600}
+.toast[hidden]{display:none}
+@media(max-width:600px){.card{padding:18px}.panel-intro{padding:22px 18px}.btn{flex:1 1 auto}.brand-name{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+</style>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Lewati ke konten utama</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#dashboard" aria-label="AI Personal Branding Builder">
+        <span class="brand-mark" aria-hidden="true">PB</span>
+        <span class="brand-name">Personal Branding Builder</span>
+      </a>
+
+      <nav class="tabs" role="tablist" aria-label="Fitur utama">
+        <button class="tab is-active" role="tab" id="tab-dashboard" data-tab="dashboard" aria-selected="true" aria-controls="panel-dashboard">Profil</button>
+        <button class="tab" role="tab" id="tab-content" data-tab="content" aria-selected="false" aria-controls="panel-content" tabindex="-1">Konten</button>
+        <button class="tab" role="tab" id="tab-interview" data-tab="interview" aria-selected="false" aria-controls="panel-interview" tabindex="-1">Wawancara</button>
+        <button class="tab" role="tab" id="tab-evaluation" data-tab="evaluation" aria-selected="false" aria-controls="panel-evaluation" tabindex="-1">Evaluasi</button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+
+    <!-- 1. DASHBOARD PROFIL -->
+    <section class="panel is-active" id="panel-dashboard" role="tabpanel" aria-labelledby="tab-dashboard">
+      <div class="panel-intro">
+        <h1>Bangun citra profesional Anda</h1>
+        <p>Isi profil singkat, lalu biarkan AI menyusun bio yang siap dipakai di LinkedIn, CV, atau portofolio.</p>
+      </div>
+
+      <div class="grid-2">
+        <form id="profile-form" class="card" novalidate>
+          <h2>Data profil</h2>
+
+          <div class="field">
+            <label for="name">Nama lengkap</label>
+            <input type="text" id="name" name="name" placeholder="Contoh: Rina Pratama" autocomplete="name" required>
+          </div>
+
+          <div class="field">
+            <label for="field">Bidang keahlian</label>
+            <input type="text" id="field" name="field" placeholder="Contoh: Akuntansi dan Pendidikan" required>
+          </div>
+
+          <div class="field">
+            <label for="experience">Pengalaman</label>
+            <textarea id="experience" name="experience" rows="4" placeholder="Contoh: Magang 6 bulan di kantor akuntan publik, mengajar praktikum jurnal umum di SMK."></textarea>
+            <p class="hint">Sebutkan proyek, angka, atau hasil nyata agar bio lebih meyakinkan.</p>
+          </div>
+
+          <div class="field">
+            <label for="skills">Keunggulan (skills)</label>
+            <input type="text" id="skills" name="skills" placeholder="Pisahkan dengan koma: Excel, Analisis Data, Public Speaking">
+          </div>
+
+          <div class="field">
+            <label for="tone">Gaya bahasa bio</label>
+            <select id="tone" name="tone">
+              <option value="profesional">Profesional dan formal</option>
+              <option value="hangat">Hangat dan personal</option>
+              <option value="ringkas">Ringkas dan tegas</option>
+            </select>
+          </div>
+
+          <p class="form-error" id="profile-error" role="alert" hidden></p>
+
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-generate-bio">Generate Professional Bio</button>
+            <button type="button" class="btn btn-ghost" id="btn-save-profile">Simpan profil</button>
+          </div>
+        </form>
+
+        <div class="card result-card" aria-live="polite">
+          <div class="result-head">
+            <h2>Bio profesional</h2>
+            <button type="button" class="btn btn-small btn-ghost" id="btn-copy-bio" disabled>Salin bio</button>
+          </div>
+          <div class="loader" id="bio-loader" hidden>
+            <span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span>
+            <span class="loader-text">AI sedang menyusun bio Anda</span>
+          </div>
+          <div class="output empty" id="bio-output">Bio Anda akan muncul di sini setelah profil diisi dan tombol Generate ditekan.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. GENERATOR KONTEN -->
+    <section class="panel" id="panel-content" role="tabpanel" aria-labelledby="tab-content" hidden>
+      <div class="panel-intro">
+        <h1>Generator konten media sosial</h1>
+        <p>Pilih platform dan topik. Draft dibuat dari profil yang tersimpan.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Pengaturan konten</h2>
+
+          <div class="field">
+            <label for="platform">Platform</label>
+            <select id="platform">
+              <option value="linkedin">LinkedIn</option>
+              <option value="twitter">Twitter/X</option>
+              <option value="instagram">Instagram</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="topic">Topik spesifik</label>
+            <input type="text" id="topic" placeholder="Contoh: pelajaran dari praktik mengajar pertama">
+          </div>
+
+          <p class="form-error" id="content-error" role="alert" hidden></p>
+
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-generate-content">Generate Content</button>
+          </div>
+
+          <div class="result-head history-head">
+            <h3>Riwayat konten</h3>
+            <button type="button" class="btn btn-small btn-ghost" id="btn-clear-history">Hapus riwayat</button>
+          </div>
+          <ul class="history" id="history-list">
+            <li class="empty">Belum ada konten yang dibuat.</li>
+          </ul>
+        </div>
+
+        <div class="card result-card" aria-live="polite">
+          <div class="result-head">
+            <h2>Draft postingan</h2>
+            <button type="button" class="btn btn-small btn-ghost" id="btn-copy-content" disabled>Salin draft</button>
+          </div>
+          <div class="loader" id="content-loader" hidden>
+            <span class="loader-dot"></span><span class="loader-dot"></span><span class="loader-dot"></span>
+            <span class="loader-text">AI sedang menulis draft</span>
+          </div>
+          <div class="output empty" id="content-output">Draft postingan akan muncul di sini.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. SIMULASI WAWANCARA -->
+    <section class="panel" id="panel-interview" role="tabpanel" aria-labelledby="tab-interview" hidden>
+      <div class="panel-intro">
+        <h1>Simulasi wawancara</h1>
+        <p>Dengarkan pertanyaan, jawab dengan suara atau ketikan, lalu terima umpan balik langsung.</p>
+      </div>
+
+      <p class="notice" id="speech-support-notice" hidden>
+        Browser ini belum mendukung pengenalan suara. Gunakan Chrome atau Edge untuk fitur suara, atau ketik jawaban Anda secara manual.
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>Pertanyaan</h2>
+          <p class="question" id="question-text" aria-live="polite">Tekan "Mulai wawancara" untuk mendapat pertanyaan pertama.</p>
+          <p class="hint" id="question-counter"></p>
+
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="btn-next-question">Mulai wawancara</button>
+            <button type="button" class="btn btn-ghost" id="btn-speak-question" disabled>Bacakan lagi</button>
+          </div>
+
+          <h3>Jawaban Anda</h3>
+          <textarea id="transcript" rows="6" placeholder="Jawaban dari suara akan tampil di sini. Anda juga bisa mengetik atau mengedit langsung."></textarea>
+          <p class="speech-status" id="speech-status" role="status">Mikrofon siap.</p>
+
+          <div class="actions">
+            <button type="button" class="btn btn-record" id="btn-record" aria-pressed="false">Mulai merekam</button>
+            <button type="button" class="btn btn-primary" id="btn-submit-answer" disabled>Kirim jawaban</button>
+          </div>
+        </div>
+
+        <div class="card result-card" aria-live="polite">
+          <h2>Umpan balik</h2>
+          <div class="output empty" id="feedback-output">Umpan balik atas jawaban Anda akan muncul di sini.</div>
+
+          <h3>Riwayat sesi</h3>
+          <ul class="history" id="interview-log">
+            <li class="empty">Belum ada jawaban yang dikirim.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. EVALUASI -->
+    <section class="panel" id="panel-evaluation" role="tabpanel" aria-labelledby="tab-evaluation" hidden>
+      <div class="panel-intro">
+        <h1>Evaluasi personal branding</h1>
+        <p>Skor dihitung dari profil, bio, riwayat konten, dan latihan wawancara Anda.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card score-card">
+          <div class="score-ring" id="score-ring" style="--score: 0" role="img" aria-label="Skor personal branding">
+            <div class="score-inner">
+              <span class="score-value" id="score-value">0</span>
+              <span class="score-max">dari 100</span>
+            </div>
+          </div>
+          <p class="score-label" id="score-label">Belum dievaluasi</p>
+          <button type="button" class="btn btn-primary" id="btn-evaluate">Evaluasi sekarang</button>
+        </div>
+
+        <div class="card" aria-live="polite">
+          <h2>Rincian skor</h2>
+          <ul class="breakdown" id="score-breakdown">
+            <li class="empty">Tekan tombol evaluasi untuk melihat rincian.</li>
+          </ul>
+
+          <h2>Rekomendasi</h2>
+          <ul class="recommendations" id="recommendations">
+            <li class="empty">Rekomendasi akan muncul setelah evaluasi.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Data tersimpan di browser Anda (LocalStorage) dan tidak dikirim ke server mana pun.</p>
+      <button type="button" class="btn btn-small btn-ghost" id="btn-reset-all">Hapus semua data</button>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <script>
+'use strict';
+/* ===== Helper ===== */
+const $ = (id) => document.getElementById(id);
+const KEYS = { profile: 'pbb_profile', bio: 'pbb_bio', history: 'pbb_history', interview: 'pbb_interview' };
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch { toast('Penyimpanan browser penuh atau diblokir.'); } },
+  clear() { Object.values(KEYS).forEach((k) => localStorage.removeItem(k)); }
+};
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+let toastTimer;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.hidden = false;
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => (t.hidden = true), 2600);
+}
+function showOutput(el, text) { el.textContent = text; el.classList.remove('empty'); }
+function setError(id, msg) { const e = $(id); e.textContent = msg || ''; e.hidden = !msg; }
+function copyText(text) {
+  (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+    .then(() => toast('Tersalin ke clipboard'), () => toast('Gagal menyalin. Salin manual.'));
+}
+
+/* =====================================================
+   MOCK AI — ganti isi fungsi ini dengan panggilan API
+   (OpenAI / Gemini) di masa depan. Semua fungsi async
+   dan mengembalikan string/objek, jadi cukup diganti
+   dengan fetch() ke backend Anda.
+   ===================================================== */
+const skillList = (p) => p.skills.split(',').map((s) => s.trim()).filter(Boolean);
+
+async function aiGenerateBio(p) {
+  await sleep(1200);
+  const sk = skillList(p), top = sk.slice(0, 3).join(', ') || 'kolaborasi dan pembelajaran cepat';
+  const exp = p.experience ? ` Pengalaman saya mencakup ${p.experience.replace(/\.$/, '')}.` : '';
+  const t = {
+    profesional: `${p.name} adalah profesional di bidang ${p.field}.${exp} Berbekal keahlian dalam ${top}, saya berfokus menghasilkan kerja yang terukur, rapi, dan memberi dampak nyata bagi tim maupun organisasi.`,
+    hangat: `Halo, saya ${p.name}. Saya menekuni ${p.field} karena senang membantu orang berkembang.${exp} Saya terbiasa bekerja dengan ${top}, dan percaya hasil terbaik lahir dari kerja sama yang tulus.`,
+    ringkas: `${p.name} | ${p.field}. Keahlian: ${top}.${exp} Terbuka untuk kolaborasi dan peluang baru.`
+  };
+  return t[p.tone] || t.profesional;
+}
+
+async function aiGenerateContent(p, platform, topic) {
+  await sleep(1100);
+  const sk = skillList(p)[0] || p.field, hook = pick(['Ada satu hal yang saya pelajari', 'Banyak orang melewatkan ini', 'Pelajaran yang mengubah cara kerja saya']);
+  if (platform === 'twitter') return `${hook} tentang ${topic}:\n\n1) Mulai dari hal kecil\n2) Konsisten latih ${sk}\n3) Bagikan prosesnya\n\nSetuju? #${p.field.split(' ')[0].replace(/\W/g, '')} #PersonalBranding`;
+  if (platform === 'instagram') return `📌 ${topic}\n\n${hook}. Sebagai ${p.field}, saya belajar bahwa ${sk} paling terasa saat dipraktikkan langsung.\n\nSwipe untuk 3 tipsnya, lalu simpan postingan ini!\n\n#${p.field.replace(/\W/g, '')} #belajarbareng #personalbranding`;
+  return `${hook} saat menekuni ${p.field}.\n\nTopik hari ini: ${topic}.\n\nDalam pengalaman saya, kuncinya ada pada ${sk}. Saya merangkumnya dalam tiga langkah:\n• Pahami masalah sebenarnya\n• Terapkan dengan contoh nyata\n• Evaluasi dan perbaiki\n\nBagaimana pengalaman Anda? Mari berdiskusi di komentar.`;
+}
+
+async function aiInterviewFeedback(q, answer) {
+  await sleep(900);
+  const words = answer.trim().split(/\s+/).filter(Boolean).length;
+  const hasNum = /\d/.test(answer), hasExample = /(contoh|misalnya|pernah|proyek|ketika|saat)/i.test(answer);
+  let score = 40; const tips = [];
+  if (words >= 40 && words <= 160) score += 25; else tips.push(words < 40 ? 'Jawaban terlalu singkat. Targetkan 40–150 kata.' : 'Jawaban terlalu panjang. Ringkas ke poin utama.');
+  if (hasExample) score += 20; else tips.push('Tambahkan contoh nyata atau proyek spesifik.');
+  if (hasNum) score += 15; else tips.push('Sertakan angka atau hasil terukur.');
+  const lead = score >= 80 ? 'Jawaban Anda kuat dan meyakinkan.' : score >= 60 ? 'Jawaban sudah baik, masih bisa dipertajam.' : 'Jawaban perlu diperkuat.';
+  return { score, text: `${lead}\nSkor: ${score}/100 (${words} kata)\n\n${tips.length ? 'Saran:\n• ' + tips.join('\n• ') : 'Pertahankan struktur: konteks, tindakan, hasil.'}` };
+}
+
+/* ===== Tab ===== */
+const tabs = [...document.querySelectorAll('.tab')];
+function activateTab(name) {
+  tabs.forEach((t) => {
+    const on = t.dataset.tab === name;
+    t.classList.toggle('is-active', on); t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+    const p = $('panel-' + t.dataset.tab); p.hidden = !on; p.classList.toggle('is-active', on);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+tabs.forEach((t, i) => {
+  t.addEventListener('click', () => activateTab(t.dataset.tab));
+  t.addEventListener('keydown', (e) => {
+    const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+    if (d) { const n = tabs[(i + d + tabs.length) % tabs.length]; n.focus(); activateTab(n.dataset.tab); }
+  });
+});
+
+/* ===== 1. Profil & Bio ===== */
+const fields = ['name', 'field', 'experience', 'skills', 'tone'];
+const readProfile = () => Object.fromEntries(fields.map((f) => [f, $(f).value.trim()]));
+function loadProfile() {
+  const p = store.get(KEYS.profile, {}); fields.forEach((f) => p[f] && ($(f).value = p[f]));
+  const bio = store.get(KEYS.bio, ''); if (bio) { showOutput($('bio-output'), bio); $('btn-copy-bio').disabled = false; }
+}
+function saveProfile(silent) {
+  const p = readProfile(); store.set(KEYS.profile, p); if (!silent) toast('Profil tersimpan');
+}
+$('btn-save-profile').addEventListener('click', () => saveProfile());
+$('btn-generate-bio').addEventListener('click', async () => {
+  const p = readProfile();
+  if (!p.name || !p.field) return setError('profile-error', 'Nama dan bidang keahlian wajib diisi.');
+  setError('profile-error'); saveProfile(true);
+  $('bio-loader').hidden = false; $('btn-generate-bio').disabled = true;
+  try { const bio = await aiGenerateBio(p); store.set(KEYS.bio, bio); showOutput($('bio-output'), bio); $('btn-copy-bio').disabled = false; toast('Bio berhasil dibuat'); }
+  catch { setError('profile-error', 'Gagal membuat bio. Coba lagi.'); }
+  finally { $('bio-loader').hidden = true; $('btn-generate-bio').disabled = false; }
+});
+$('btn-copy-bio').addEventListener('click', () => copyText($('bio-output').textContent));
+
+/* ===== 2. Konten ===== */
+let lastContent = '';
+const names = { linkedin: 'LinkedIn', twitter: 'Twitter/X', instagram: 'Instagram' };
+function renderHistory() {
+  const h = store.get(KEYS.history, []), ul = $('history-list');
+  ul.innerHTML = h.length ? h.map((i, n) => `<li><strong>${esc(names[i.platform])}</strong> · ${esc(i.topic)}<small>${esc(i.date)}</small><button type="button" class="btn btn-small btn-ghost" data-n="${n}">Lihat</button></li>`).join('') : '<li class="empty">Belum ada konten yang dibuat.</li>';
+}
+$('history-list').addEventListener('click', (e) => {
+  const b = e.target.closest('button[data-n]'); if (!b) return;
+  const item = store.get(KEYS.history, [])[b.dataset.n]; if (!item) return;
+  lastContent = item.text; showOutput($('content-output'), item.text); $('btn-copy-content').disabled = false;
+});
+$('btn-generate-content').addEventListener('click', async () => {
+  const p = store.get(KEYS.profile, {}), topic = $('topic').value.trim(), platform = $('platform').value;
+  if (!p.name || !p.field) return setError('content-error', 'Isi dan simpan profil terlebih dahulu di tab Profil.');
+  if (!topic) return setError('content-error', 'Tulis topik spesifik untuk konten Anda.');
+  setError('content-error'); $('content-loader').hidden = false; $('btn-generate-content').disabled = true;
+  try {
+    lastContent = await aiGenerateContent({ ...p, skills: p.skills || '' }, platform, topic);
+    showOutput($('content-output'), lastContent); $('btn-copy-content').disabled = false;
+    const h = store.get(KEYS.history, []); h.unshift({ platform, topic, text: lastContent, date: new Date().toLocaleString('id-ID') });
+    store.set(KEYS.history, h.slice(0, 20)); renderHistory();
+  } catch { setError('content-error', 'Gagal membuat konten. Coba lagi.'); }
+  finally { $('content-loader').hidden = true; $('btn-generate-content').disabled = false; }
+});
+$('btn-copy-content').addEventListener('click', () => copyText(lastContent));
+$('btn-clear-history').addEventListener('click', () => { localStorage.removeItem(KEYS.history); renderHistory(); toast('Riwayat dihapus'); });
+
+/* ===== 3. Wawancara + Web Speech API ===== */
+const questions = [
+  'Ceritakan tentang diri Anda dan keunggulan Anda.',
+  'Mengapa Anda tertarik pada bidang ini?',
+  'Ceritakan proyek atau pencapaian yang paling Anda banggakan.',
+  'Bagaimana Anda menghadapi tekanan atau tenggat waktu yang ketat?',
+  'Ceritakan kegagalan dan apa yang Anda pelajari darinya.',
+  'Apa kelemahan terbesar Anda dan bagaimana Anda memperbaikinya?',
+  'Bagaimana Anda bekerja dalam tim?',
+  'Di mana Anda melihat diri Anda dalam lima tahun ke depan?'
+];
+let qi = -1, recognition = null, recording = false, baseText = '';
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+const canSpeak = 'speechSynthesis' in window;
+if (!SR) { $('speech-support-notice').hidden = false; $('btn-record').disabled = true; $('speech-status').textContent = 'Pengenalan suara tidak tersedia. Ketik jawaban Anda.'; }
+
+function speak(text) {
+  if (!canSpeak) return toast('Text-to-Speech tidak didukung browser ini.');
+  speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang = 'id-ID'; u.rate = 0.95; speechSynthesis.speak(u);
+}
+$('btn-next-question').addEventListener('click', () => {
+  stopRecording(); qi = (qi + 1) % questions.length;
+  $('question-text').textContent = questions[qi]; $('question-counter').textContent = `Pertanyaan ${qi + 1} dari ${questions.length}`;
+  $('btn-next-question').textContent = 'Pertanyaan berikutnya'; $('btn-speak-question').disabled = false;
+  $('btn-submit-answer').disabled = false; $('transcript').value = ''; showFeedbackEmpty(); speak(questions[qi]);
+});
+$('btn-speak-question').addEventListener('click', () => speak(questions[qi]));
+function showFeedbackEmpty() { const f = $('feedback-output'); f.textContent = 'Umpan balik atas jawaban Anda akan muncul di sini.'; f.classList.add('empty'); }
+
+function startRecording() {
+  if (!SR) return;
+  speechSynthesis.cancel(); recognition = new SR(); recognition.lang = 'id-ID'; recognition.interimResults = true; recognition.continuous = true;
+  baseText = $('transcript').value ? $('transcript').value.trim() + ' ' : '';
+  recognition.onresult = (e) => { let t = ''; for (let i = 0; i < e.results.length; i++) t += e.results[i][0].transcript; $('transcript').value = baseText + t; };
+  recognition.onerror = (e) => { $('speech-status').textContent = e.error === 'not-allowed' ? 'Izin mikrofon ditolak. Aktifkan di pengaturan browser.' : 'Terjadi kesalahan: ' + e.error; stopRecording(true); };
+  recognition.onend = () => { if (recording) stopRecording(); };
+  recognition.start(); recording = true;
+  $('btn-record').textContent = 'Berhenti merekam'; $('btn-record').setAttribute('aria-pressed', 'true'); $('speech-status').textContent = 'Mendengarkan… silakan bicara.';
+}
+function stopRecording(keepMsg) {
+  recording = false; if (recognition) { try { recognition.stop(); } catch {} recognition = null; }
+  $('btn-record').textContent = 'Mulai merekam'; $('btn-record').setAttribute('aria-pressed', 'false');
+  if (!keepMsg) $('speech-status').textContent = SR ? 'Mikrofon siap.' : $('speech-status').textContent;
+}
+$('btn-record').addEventListener('click', () => (recording ? stopRecording() : startRecording()));
+
+function renderLog() {
+  const l = store.get(KEYS.interview, []), ul = $('interview-log');
+  ul.innerHTML = l.length ? l.map((i) => `<li><strong>${esc(i.q)}</strong><small>Skor ${i.score}/100 · ${esc(i.date)}</small></li>`).join('') : '<li class="empty">Belum ada jawaban yang dikirim.</li>';
+}
+$('btn-submit-answer').addEventListener('click', async () => {
+  stopRecording(); const ans = $('transcript').value.trim();
+  if (ans.length < 10) return toast('Jawaban terlalu pendek. Rekam atau ketik jawaban dulu.');
+  $('btn-submit-answer').disabled = true;
+  try {
+    const r = await aiInterviewFeedback(questions[qi], ans); showOutput($('feedback-output'), r.text);
+    const l = store.get(KEYS.interview, []); l.unshift({ q: questions[qi], score: r.score, date: new Date().toLocaleString('id-ID') });
+    store.set(KEYS.interview, l.slice(0, 30)); renderLog();
+  } finally { $('btn-submit-answer').disabled = false; }
+});
+
+/* ===== 4. Evaluasi ===== */
+function evaluate() {
+  const p = store.get(KEYS.profile, {}), bio = store.get(KEYS.bio, ''), h = store.get(KEYS.history, []), iv = store.get(KEYS.interview, []);
+  const sk = p.skills ? skillList(p).length : 0, reco = [];
+  const rows = [];
+  let prof = 0; ['name', 'field', 'experience', 'skills'].forEach((f) => p[f] && (prof += 5)); if (sk >= 3) prof += 5;
+  rows.push(['Kelengkapan profil', prof, 25]);
+  let b = 0; if (bio) { b += 10; if (bio.length > 150) b += 5; if (/\d/.test(bio)) b += 5; }
+  rows.push(['Kualitas bio', b, 20]);
+  const c = Math.min(h.length, 5) * 5; rows.push(['Aktivitas konten', c, 25]);
+  const avg = iv.length ? iv.reduce((s, i) => s + i.score, 0) / iv.length : 0;
+  const w = iv.length ? Math.round((avg / 100) * 30 * Math.min(1, iv.length / 3)) : 0; rows.push(['Kesiapan wawancara', w, 30]);
+  const total = rows.reduce((s, r) => s + r[1], 0);
+  if (!p.name || !p.field) reco.push('Lengkapi nama dan bidang keahlian di tab Profil.');
+  if (!p.experience) reco.push('Tambahkan proyek spesifik atau pengalaman ke dalam profil Anda.');
+  if (sk < 3) reco.push('Cantumkan minimal 3 skills utama.');
+  if (!bio) reco.push('Buat bio profesional dengan tombol Generate Professional Bio.');
+  else if (!/\d/.test(bio)) reco.push('Tambahkan angka atau hasil terukur ke dalam bio Anda.');
+  if (h.length < 3) reco.push(`Buat lebih banyak konten${p.field ? ' yang berfokus pada ' + p.field : ''} (baru ${h.length}, targetkan 5).`);
+  if (iv.length < 3) reco.push('Latih minimal 3 jawaban wawancara.'); else if (avg < 70) reco.push('Perkuat jawaban wawancara dengan contoh nyata dan angka.');
+  if (!reco.length) reco.push('Bagus! Pertahankan konsistensi dan perbarui profil secara berkala.');
+  const label = total >= 80 ? 'Brand profesional yang kuat' : total >= 60 ? 'Cukup baik, terus tingkatkan' : total >= 35 ? 'Mulai terbentuk' : 'Perlu dibangun';
+  $('score-ring').style.setProperty('--score', total); $('score-value').textContent = total; $('score-label').textContent = label;
+  $('score-breakdown').innerHTML = rows.map(([n, v, m]) => `<li><div class="bd-row"><span>${n}</span><span>${v}/${m}</span></div><div class="bar"><span style="width:${(v / m) * 100}%"></span></div></li>`).join('');
+  $('recommendations').innerHTML = reco.map((r) => `<li>${esc(r)}</li>`).join('');
+}
+$('btn-evaluate').addEventListener('click', () => { evaluate(); toast('Evaluasi selesai'); });
+
+/* ===== Reset & init ===== */
+$('btn-reset-all').addEventListener('click', () => {
+  if (!confirm('Hapus semua data profil, bio, konten, dan riwayat wawancara?')) return;
+  store.clear(); location.reload();
+});
+loadProfile(); renderHistory(); renderLog();
+if (store.get(KEYS.bio, '') || store.get(KEYS.profile, null)) evaluate();
+
+</script>
+</body>
+</html>
